@@ -14,7 +14,7 @@ import paho.mqtt.publish as publish
 import time
 
 # url = 'http://127.0.0.1:8080'
-url = '192.168.1.109:8080'
+url = 'http://192.168.1.109:8080'
 
 class Sensors(object):
     def __init__(self):
