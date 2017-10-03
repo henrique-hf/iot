@@ -1,0 +1,58 @@
+{
+  "trucks": [
+    {
+      "raspberryMAC": "40637554075871",
+      "channelName": "Truck1",
+      "temperature": {
+        "active": true,
+        "pin": 2
+      },
+      "humidity": {
+        "active": true,
+        "pin": 11
+      },
+      "position": {
+        "active": true,
+        "pin": 14
+      },
+      "samplingRate": 5
+    },
+    {
+      "raspberryMAC": "HGDHAGDA",
+      "channelName": "Truck2",
+      "temperature": {
+        "active": true,
+        "pin": 2
+      },
+      "humidity": {
+        "active": true,
+        "pin": 11
+      },
+      "position": {
+        "active": true,
+        "pin": 14
+      },
+      "samplingRate": 5
+    }
+  ],
+  "topics": {
+    "temperature": "field1",
+    "humidity": "field2",
+    "latitude": "field3",
+    "longitude": "field4"
+  },
+  "broker": {
+    "address": "mqtt.thingspeak.com",
+    "connection": "tcp",
+    "port": 1883,
+    "encryption": "none"
+  },
+  "key": "9O7O5KXPZFGY3VWG",
+  "user": "henrique23",
+  "telegram": {
+    "getTemp": true,
+    "getHum": true,
+    "getPos": true,
+    "getAll": true
+  }
+}
