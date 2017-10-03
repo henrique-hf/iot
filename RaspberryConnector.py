@@ -6,15 +6,14 @@
 # (every 5 minutes).
 
 import paho.mqtt.client as client
-#import Adafruit_DHT
+import Adafruit_DHT
 import requests
 import json
 from uuid import getnode as get_mac
 import paho.mqtt.publish as publish
 import time
 
-# url = 'http://127.0.0.1:8080'
-url = 'http://192.168.1.109:8080'
+url = 'http://127.0.0.1:8080'
 
 class Sensors(object):
     def __init__(self):
@@ -29,28 +28,36 @@ class Sensors(object):
         print self.configDict
 
     def getTemperature(self):
-        pin = self.configDict['temperature']['pin']
-        print 'Pin ' + str(type(pin))
-        print pin
-        temperature = Adafruit_DHT.read_retry(pin)
+        if self.configDict['temperature']['active'] == True:
+            pin = self.configDict['temperature']['pin']
+            print 'Pin ' + str(type(pin))
+            print pin
+            temperature, humidity = Adafruit_DHT.read_retry(11, 2)
+            return {'temperature': temperature, 'humidity': humidity}
+        else:
+            return False
 
-        return str(temperature)
+
 
     def getHumidity(self):
-        pin = self.configDict['humidity']['pin']
-        print 'Pin ' + str(type(pin))
-        print pin
-        humidity = Adafruit_DHT.read_retry(pin)
-
-        return str(humidity)
+        if self.configDict['humidity']['active'] == True:
+            pin = self.configDict['humidity']['pin']
+            print 'Pin ' + str(type(pin))
+            print pin
+            humidity = Adafruit_DHT.read_retry(pin)
+            return str(humidity)
+        else:
+            return False
 
     def getPosition(self):
-        pin = self.configDict['position']['pin']
-        print 'Pin ' + str(type(pin))
-        print pin
-        latitude, longitude = Adafruit_DHT.read_retry(pin)
-
-        return {['latitude']: str(latitude), ['longitude']: str(longitude)}
+        if self.configDict['position']['active'] == True:
+            pin = self.configDict['position']['pin']
+            print 'Pin ' + str(type(pin))
+            print pin
+            latitude, longitude = Adafruit_DHT.read_retry(pin)
+            return {['latitude']: str(latitude), ['longitude']: str(longitude)}
+        else:
+            return False
 
 
 class UpdateData(object):
@@ -119,13 +126,16 @@ if __name__ == "__main__":
     sample = 0
 
     for sample in range(5):
-        temp = sensor.getTemperature()
-        hum = sensor.getHumidity()
+        data = sensor.getTemperature()
+        temp = data['temperature']
+        hum = data['humidity']
 
-        update.publishTemp(temp)
-        update.publishHum(hum)
+        if temp != False:
+            update.publishTemp(temp)
+
+        if hum != False:
+            update.publishHum(hum)
 
         sample = sample + 1
 
         time.sleep(5)
-        
