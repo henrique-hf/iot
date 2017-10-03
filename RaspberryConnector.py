@@ -23,6 +23,7 @@ class Sensors(object):
 
         self.config = requests.get(url + '/sensor/' + self.mac).content
         self.configDict = json.loads(self.config)
+        self.samplingRate = self.configDict['samplingRate']
         print 'ConfigDict ' + str(type(self.configDict))
         print self.configDict
 
@@ -111,3 +112,19 @@ class UpdateData(object):
 
 
 if __name__ == "__main__":
+    sensor = Sensors()
+    update = UpdateData()
+
+    sample = 0
+
+    for sample in range(5):
+        temp = sensor.getTemperature()
+        hum = sensor.getHumidity()
+
+        update.publishTemp(temp)
+        update.publishHum(hum)
+
+        sample = sample + 1
+
+        time.sleep(5)
+        
