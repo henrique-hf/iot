@@ -2,9 +2,8 @@ import cherrypy
 import json
 
 
-@cherrypy.expose
 class Catalog(object):
-    expose = True
+    exposed = True
 
     def __init__(self):
         self.file = open("catalog.json", "r")
@@ -22,7 +21,7 @@ class Catalog(object):
         elif uri[0] == 'broker':
             print self.catalog['broker']
             print type(self.catalog['broker'])
-            return json.dumps(self.catalog['broker'])
+            return self.catalog['broker']['address']
 
         # OK
         elif uri[0] == 'telegram':
@@ -45,18 +44,46 @@ class Catalog(object):
         # OK
         elif uri[0] == 'sensor':
             for truck in self.catalog['trucks']:
-                if uri[1] == truck['raspberryMAC']:
+                if uri[1] == truck['raspberry']:
                     return json.dumps(truck)
 
+        elif uri[0] == 'database':
+            print self.catalog['database']
+            print type(self.catalog['database'])
+            return self.catalog['database']
+
+        elif uri[0] == 'trucks':
+            print self.catalog['trucks']
+            print type(self.catalog['trucks'])
+            return json.dumps(self.catalog['trucks'])
+
+
+# if __name__ == "__main__":
+#     conf = {
+#         "/": {
+#             "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+#             "tools.sessions.on": True,
+#         }
+#     }
+#     # cherrypy.config.update({
+#     #     # server.socket_host": 'localhost',
+#     #     "server.socket_host": '192.168.1.109',
+#     #     "server.socket_port": 8080})
+#     cherrypy.tree.mount(Catalog(), "/", conf)
+#     cherrypy.engine.start()
+#     cherrypy.engine.block()
+#     # cherrypy.quickstart(Catalog(), '/', conf)
 
 if __name__ == "__main__":
-    conf = {
-        "/": {
-            "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
-            "tools.sessions.on": True,
-        }
-    }
-    # cherrypy.tree.mount(Catalog(), "/", conf)
-    # cherrypy.engine.start()
-    # cherrypy.engine.block()
-    cherrypy.quickstart(Catalog(), '/', conf)
+        conf = {
+            "/": {
+                "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+                "tools.sessions.on": True,
+                }
+            }
+        cherrypy.tree.mount(Catalog(), "/", conf)
+        cherrypy.config.update({
+            "server.socket_host": '127.0.0.1',
+            "server.socket_port": 8089})
+        cherrypy.engine.start()
+        cherrypy.engine.block()

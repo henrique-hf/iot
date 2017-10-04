@@ -1,11 +1,6 @@
-# The Home Catalog works as a catalog for all the actors in the system. It provides information about
-# end-points (i.e. REST Web Services and MQTT topics) of all the devices, resources and services
-# in the platform. It also provides configuration settings for applications and control strategies (e.g
-# timers, list of sensors and actuators). Each actor, during its start-up, must retrieve such information
-# from the Home Catalog exploiting its REST Web Services.
-
 import requests
 import json
+
 
 class Channels(object):
     def __init__(self):
@@ -40,8 +35,9 @@ class Channels(object):
     # OK
     # Obs: we can create multiple channels with the same name
     def create(self, name):
-        data = {'name': name, 'api_key': self.apiKey, 'public_flag': 'true', 'field1': 'Temperature',
-                'field2': 'Humidity', 'field3': 'Latitude', 'field4': 'Longitude'}
+        data = {'name': name, 'api_key': self.apiKey, 'public_flag': 'true',
+                self.conf['topics']['temperature']: 'Temperature', self.conf['topics']['humidity']: 'Humidity',
+                self.conf['topics']['latitude']: 'Latitude', self.conf['topics']['longitude']: 'Longitude'}
         jsonData = json.dumps(data)
         # send the POST request to create the new channel
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}

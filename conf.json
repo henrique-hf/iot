@@ -1,36 +1,30 @@
 {
   "trucks": [
     {
-      "raspberryMAC": "40637554075871",
+      "raspberry": "rasp1",
       "channelName": "Truck1",
       "temperature": {
-        "active": true,
-        "pin": 2
+        "active": true
       },
       "humidity": {
-        "active": true,
-        "pin": 11
+        "active": true
       },
       "position": {
-        "active": true,
-        "pin": 14
+        "active": true
       },
       "samplingRate": 5
     },
     {
-      "raspberryMAC": "HGDHAGDA",
+      "raspberry": "rasp2",
       "channelName": "Truck2",
       "temperature": {
-        "active": true,
-        "pin": 2
+        "active": true
       },
       "humidity": {
-        "active": true,
-        "pin": 11
+        "active": true
       },
       "position": {
-        "active": true,
-        "pin": 14
+        "active": true
       },
       "samplingRate": 5
     }
@@ -42,10 +36,7 @@
     "longitude": "field4"
   },
   "broker": {
-    "address": "mqtt.thingspeak.com",
-    "connection": "tcp",
-    "port": 1883,
-    "encryption": "none"
+    "address": "mqtt.thingspeak.com"
   },
   "key": "9O7O5KXPZFGY3VWG",
   "user": "henrique23",
@@ -54,5 +45,6 @@
     "getHum": true,
     "getPos": true,
     "getAll": true
-  }
+  },
+  "database": "http://192.168.43.175"
 }
